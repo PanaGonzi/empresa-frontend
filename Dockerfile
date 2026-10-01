@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 
 # --- Etapa 1: compilar Angular ---
-FROM node:24-alpine AS build
+# El build de Angular no depende de la arquitectura: se ejecuta en la nativa del runner (sin emulacion)
+FROM --platform=$BUILDPLATFORM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
