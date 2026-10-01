@@ -1,0 +1,27 @@
+<form class="nueva" (submit)="$event.preventDefault(); crear(titulo)">
+  <input #titulo type="text" maxlength="200" placeholder="¿Qué hay que hacer?" aria-label="Título de la nueva tarea" />
+  <button type="submit">Añadir</button>
+</form>
+
+@if (error(); as mensaje) {
+  <p class="error" role="alert">{{ mensaje }}</p>
+}
+
+@if (tareas().length === 0) {
+  <p class="vacio">No hay tareas todavía.</p>
+} @else {
+  <p class="resumen">{{ pendientes() }} pendiente(s) de {{ tareas().length }}</p>
+  <ul>
+    @for (tarea of tareas(); track tarea.id) {
+      <li [class.hecha]="tarea.completada">
+        <label>
+          <input type="checkbox" [checked]="tarea.completada" (change)="alternar(tarea)" />
+          <span>{{ tarea.titulo }}</span>
+        </label>
+        <button type="button" class="borrar" (click)="borrar(tarea)" [attr.aria-label]="'Borrar ' + tarea.titulo">
+          Borrar
+        </button>
+      </li>
+    }
+  </ul>
+}
